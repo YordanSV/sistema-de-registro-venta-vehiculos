@@ -81,7 +81,7 @@
 
 <body>
 
-    <?php include 'includes/navbar.php'; ?>
+    <?php include 'includes/navbarAdministrador.php'; ?>
     <?php include 'includes/formAddVehiculo.php'; ?>
 
     <?php

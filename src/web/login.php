@@ -4,6 +4,68 @@
 <head>
     <title>Ventas</title>
     <link rel="stylesheet" href="css/estilo.css">
+    <script>
+        function redirigirRegistrar() {
+            window.location.href = " http://localhost/sistema-de-registro-venta-vehiculos/src/web/register.php"; // Cambia la URL a la que deseas redirigir
+        }
+    </script>
+    <style>
+        /* Estilos generales del formulario */
+        form {
+            width: 300px;
+            margin: auto;
+            padding: 40px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"],
+        button {
+            width: 40%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 10px auto 0;
+            /* Centro vertical y horizontalmente */
+            font-weight: bold;
+            display: block;
+            /* Para ocupar todo el ancho disponible */
+        }
+
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,34 +96,32 @@
         }
 
 
-        // Consulta para obtener todos los usuarios
-        $query = "SELECT nombre_usuario, contrasena, tipo_usuario FROM Usuario";
+        // Consulta para verificar el usuario y la contraseña
+        $query = "SELECT id, nombre_usuario, contrasena, tipo_usuario FROM Usuario WHERE nombre_usuario = '$username' AND contrasena = '$password'";
         $result = $conn->query($query);
 
-        // Verificar si hay resultados
-        if ($result->num_rows > 0) {
-            echo "<h2>Listado de Usuarios:</h2>";
-            echo "<table>";
-            echo "<tr><th>Nombre de Usuario</th><th>Contraseña</th><th>Tipo de Usuario</th></tr>";
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            $tipo_usuario = $row["tipo_usuario"];
+            $user_id = $row["id"];
 
-            // Recorrer los resultados y mostrarlos en una tabla
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["nombre_usuario"] . "</td>";
-                echo "<td>" . $row["contrasena"] . "</td>";
-                echo "<td>" . $row["tipo_usuario"] . "</td>";
-                echo "</tr>";
+
+            // Redirigir según el tipo de usuario
+            if ($tipo_usuario === "Administrador") {
+                header("Location: administrador.php?id=$user_id");
+            } elseif ($tipo_usuario === "Cliente") {
+                header("Location: cliente.php?id=$user_id");
+            } else {
+                echo "Tipo de usuario no reconocido.";
             }
-
-            echo "</table>";
         } else {
-            echo "No se encontraron usuarios.";
+            //echo "Credenciales inválidas.";
         }
 
-        // Cerrar conexión
         $conn->close();
     }
     ?>
+    <button onclick="redirigirRegistrar()">Registrate</button>
 </body>
 
 </html>

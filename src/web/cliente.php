@@ -22,11 +22,11 @@
             font-size: 16px;
             margin: 5px 0;
         }
-
         img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
+            border: 2px solid #333; /* Agregar un borde para resaltar las imágenes */
+            margin: 10px; /* Agregar margen para separar las imágenes */
+            width: 250px;
+            height: 200px;
         }
 
         #filter-form {
